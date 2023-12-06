@@ -7,7 +7,7 @@ export default function Navbar() {
   return (
     <div className="flex items-center p-2 gap-2">
       <Link href={"/"}>
-        <Cat size={28} />
+        <Cat size={32} />
       </Link>
       <ModeToggle />
     </div>
