@@ -21,7 +21,7 @@ export async function createThread(formData: FormData) {
       },
     });
 
-    revalidatePath("");
+    revalidatePath("/");
     return "success";
   } catch (error) {
     return "error";
