@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import prisma from "./db";
 
 export async function createThread(formData: FormData) {
@@ -21,7 +21,7 @@ export async function createThread(formData: FormData) {
       },
     });
 
-    revalidatePath("/", "page");
+    revalidatePath("");
     return "success";
   } catch (error) {
     return "error";

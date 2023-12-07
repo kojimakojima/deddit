@@ -7,6 +7,7 @@ import { PenSquare } from "lucide-react";
 import { createThread } from "../actions";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { revalidatePath } from "next/cache";
 
 export default function AddThread() {
   const router = useRouter();
