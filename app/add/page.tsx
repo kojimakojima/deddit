@@ -13,9 +13,10 @@ export default function AddThread() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    toast.loading("Loading...");
     const formData = new FormData(e.currentTarget as HTMLFormElement);
     const result = await createThread(formData);
+    toast.dismiss();
 
     if (result === "empty") {
       toast.error("Fill out completely");
