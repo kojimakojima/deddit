@@ -11,30 +11,28 @@ import toast from "react-hot-toast";
 export default function AddThread() {
   const router = useRouter();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    toast.loading("Loading...");
-    const formData = new FormData(e.currentTarget as HTMLFormElement);
-    const result = await createThread(formData);
-    toast.dismiss();
-
-    if (result === "empty") {
-      toast.error("Fill out completely");
-    } else if (result === "success") {
-      toast.success("Created Successfully");
-      router.push("/");
-    } else if (result === "error") {
-      toast.error("Failed to create a thread");
-    }
-  };
-
   return (
     <div className="text-center">
       <h1 className="font-bold  text-3xl my-8 text-teal-600">
         CREATE NEW THREAD
       </h1>
 
-      <form className="mx-8" onSubmit={handleSubmit}>
+      <form
+        className="mx-8"
+        action={async (formData: FormData) => {
+          toast.loading("Creating");
+          const result = await createThread(formData);
+          toast.dismiss();
+          if (result === "empty") {
+            toast.error("Fill out completely");
+          } else if (result === "success") {
+            toast.success("Created Successfully");
+            router.push("/");
+          } else if (result === "error") {
+            toast.error("Failed to create a thread");
+          }
+        }}
+      >
         <Input className="mb-2" type="text" name="title" placeholder="Title" />
         <Textarea
           className="mb-2"
