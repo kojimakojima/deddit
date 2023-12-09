@@ -6,8 +6,11 @@ import { Input } from "./ui/input";
 import { createComment } from "@/app/actions";
 import toast from "react-hot-toast";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "./ui/hover-card";
+import { useRef } from "react";
 
 export default function CommentForm({ id }: { id: string }) {
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
   return (
     <form
       action={async (formData: FormData) => {
@@ -18,6 +21,9 @@ export default function CommentForm({ id }: { id: string }) {
           toast.error("Type something to submit");
         } else if (result === "success") {
           toast.success("Posted Successfully");
+          if (inputRef.current) {
+            inputRef.current.value = "";
+          }
         } else if (result === "error") {
           toast.error("Failed to post");
         }
@@ -29,6 +35,7 @@ export default function CommentForm({ id }: { id: string }) {
         type="text"
         placeholder="Comment"
         name="comment"
+        ref={inputRef}
       />
       <HoverCard>
         <HoverCardTrigger>
