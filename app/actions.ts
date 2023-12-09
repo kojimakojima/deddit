@@ -27,3 +27,28 @@ export async function createThread(formData: FormData) {
     return "error";
   }
 }
+
+export async function createComment(formData: FormData, id: string) {
+  "use server";
+
+  try {
+    const comment = formData.get("comment") as string;
+    const threadId = id as string;
+
+    if (!comment.trim()) {
+      return "empty";
+    }
+
+    await prisma.comment.create({
+      data: {
+        comment: comment,
+        threadId: threadId,
+      },
+    });
+
+    revalidatePath(`/thread/${id}`);
+    return "success";
+  } catch (error) {
+    return "error";
+  }
+}

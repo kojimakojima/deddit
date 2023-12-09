@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { MessagesSquare, Pencil, Send } from "lucide-react";
+import { MessagesSquare, Pencil, Send, UserRound } from "lucide-react";
 import prisma from "@/app/db";
 import { formatDate } from "@/helpers/formatDate";
 import { reduceText } from "@/helpers/reduceText";
@@ -12,7 +12,8 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-
+import CommentForm from "@/components/comment-form";
+import { formatDateTime } from "@/helpers/formatDateTime";
 async function getThread(id: string) {
   const data = await prisma.thread.findUnique({
     where: {
@@ -23,8 +24,19 @@ async function getThread(id: string) {
   return data;
 }
 
+async function getComments(id: string) {
+  const data = await prisma.comment.findMany({
+    where: {
+      threadId: id,
+    },
+  });
+
+  return data;
+}
+
 export default async function Thread({ params }: { params: { id: string } }) {
   const thread = await getThread(params.id);
+  const comments = await getComments(params.id);
 
   if (thread) {
     const descLength: number = 200;
@@ -45,7 +57,9 @@ export default async function Thread({ params }: { params: { id: string } }) {
               </span>
             </p>
           </div>
-          <p className="text-lg break-words text-slate-300">{displayedDesc}</p>
+          <p className="p-2 border text-lg break-words text-slate-300">
+            {displayedDesc}
+          </p>
         </div>
         {isLongDesc && (
           <div className="flex justify-center mb-8">
@@ -67,19 +81,33 @@ export default async function Thread({ params }: { params: { id: string } }) {
 
         <div>
           <div className="mb-4">
-            <h2 className="flex">
-              <MessagesSquare /> Comments
+            <h2 className="flex mb-8 text-2xl gap-4">
+              <MessagesSquare /> {comments.length} Comments
             </h2>
 
-            <div>{/* comments hhere */}</div>
-          </div>
+            <div className="mb-8">
+              {comments.length === 0 ? (
+                <h2 className="text-slate-500 text-center">No comments yet</h2>
+              ) : (
+                comments.map((comment) => (
+                  <div className="mb-4 flex" key={comment.id}>
+                    <UserRound className="flex-shrink-0" />
+                    <div className="max-w-full ml-2 pr-10">
+                      <div className="flex items-center gap-2">
+                        <p className="text-sm">@Anonymous</p>
+                        <p className="text-sm text-slate-600">
+                          {formatDateTime(new Date(comment.createdAt))}
+                        </p>
+                      </div>
 
-          <form>
-            <Input className="mb-2" type="text" placeholder="Comment" />
-            <Button variant="outline">
-              <Send className="mr-2 h-4 w-4" /> POST
-            </Button>
-          </form>
+                      <p className="text-lg break-words">{comment.comment}</p>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+          <CommentForm id={params.id} />
         </div>
       </div>
     );
