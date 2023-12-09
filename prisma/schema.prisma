@@ -15,7 +15,7 @@ model Thread {
   title String
   description String
   likes Int @default(0)
-  comments Comment[]
+  comments Comment[] 
   createdAt DateTime @default(now())
 }
 
@@ -23,7 +23,7 @@ model Comment {
   id  String @id @default(uuid())
   comment String
   threadId String
-  thread  Thread @relation(fields: [threadId], references: [id])
+  thread  Thread @relation(fields: [threadId], references: [id], onDelete: Cascade)
   likes Int @default(0)
   createdAt DateTime @default(now())
   editedDate DateTime?
