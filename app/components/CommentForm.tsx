@@ -1,11 +1,15 @@
 "use client";
 
 import { Send } from "lucide-react";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
+import { Button } from "../../components/ui/button";
+import { Input } from "../../components/ui/input";
 import { createComment } from "@/app/actions";
 import toast from "react-hot-toast";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "./ui/hover-card";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "../../components/ui/hover-card";
 import { useRef } from "react";
 
 export default function CommentForm({ id }: { id: string }) {

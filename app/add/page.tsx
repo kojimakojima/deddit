@@ -11,9 +11,15 @@ export default async function AddThread() {
   if (!session) {
     return redirect("/");
   }
+
   return (
     <div className="text-center">
-      <Button asChild size="sm" variant="outline" className="absolute left-10">
+      <Button
+        asChild
+        size="sm"
+        variant="outline"
+        className="absolute bottom-40 left-5"
+      >
         <Link href="/">
           <ArrowBigLeft />
         </Link>

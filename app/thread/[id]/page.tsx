@@ -11,7 +11,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import CommentForm from "@/components/comment-form";
+import CommentForm from "@/app/components/CommentForm";
 import { formatDateTime } from "@/helpers/formatDateTime";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
