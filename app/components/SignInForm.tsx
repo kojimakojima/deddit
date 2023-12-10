@@ -9,18 +9,26 @@ import toast from "react-hot-toast";
 
 export default function SigninForm() {
   const [email, setEmail] = useState<null | string>(null);
+  const [isSending, setIsSending] = useState(false);
 
   async function SignInWithEmail() {
+    toast.loading("Loading...");
+    setIsSending(true);
     const signInResult = await signIn("email", {
       email: email,
       callbackUrl: `${window.location.origin}`,
+      redirect: false,
     });
 
     if (signInResult?.ok) {
+      toast.dismiss();
+      setIsSending(false);
       toast.success("Check your email!");
       return;
     }
 
+    toast.dismiss();
+    setIsSending(false);
     toast.error("Something went wrong");
     return;
   }
@@ -34,9 +42,10 @@ export default function SigninForm() {
           name="email"
           type="email"
           placeholder="something@example.com"
+          disabled={isSending}
         />
       </div>
-      <Button type="submit" className="mt-4">
+      <Button type="submit" className="mt-4" disabled={isSending}>
         Login with Email
       </Button>
     </form>
