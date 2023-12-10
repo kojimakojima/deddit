@@ -1,49 +1,29 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { PenSquare } from "lucide-react";
-import { createThread } from "../actions";
-import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
-import { revalidatePath } from "next/cache";
+import { ArrowBigLeft } from "lucide-react";
+import Link from "next/link";
+import AddForm from "../components/AddForm";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../utils/auth";
+import { redirect } from "next/navigation";
 
-export default function AddThread() {
-  const router = useRouter();
-
+export default async function AddThread() {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return redirect("/");
+  }
   return (
     <div className="text-center">
+      <Button asChild size="sm" variant="outline" className="absolute left-10">
+        <Link href="/">
+          <ArrowBigLeft />
+        </Link>
+      </Button>
+
       <h1 className="font-bold  text-3xl my-8 text-teal-600">
         CREATE NEW THREAD
       </h1>
 
-      <form
-        className="mx-8"
-        action={async (formData: FormData) => {
-          toast.loading("Creating");
-          const result = await createThread(formData);
-          toast.dismiss();
-          if (result === "empty") {
-            toast.error("Fill out completely");
-          } else if (result === "success") {
-            toast.success("Created Successfully");
-            router.push("/");
-          } else if (result === "error") {
-            toast.error("Failed to create a thread");
-          }
-        }}
-      >
-        <Input className="mb-2" type="text" name="title" placeholder="Title" />
-        <Textarea
-          className="mb-2"
-          name="description"
-          placeholder="Description"
-        />
-        <Button variant="outline">
-          <PenSquare className="mr-2 h-4 w-4" /> Create
-        </Button>
-      </form>
+      <AddForm />
     </div>
   );
 }

@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { MessagesSquare, Pencil, Send, UserRound } from "lucide-react";
-import prisma from "@/app/db";
+import { MessagesSquare, Pencil, UserRound } from "lucide-react";
+import prisma from "@/app/utils/db";
 import { formatDate } from "@/helpers/formatDate";
 import { reduceText } from "@/helpers/reduceText";
 import {
@@ -14,6 +13,10 @@ import {
 } from "@/components/ui/sheet";
 import CommentForm from "@/components/comment-form";
 import { formatDateTime } from "@/helpers/formatDateTime";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
+import { authOptions } from "@/app/utils/auth";
+
 async function getThread(id: string) {
   const data = await prisma.thread.findUnique({
     where: {
@@ -35,6 +38,11 @@ async function getComments(id: string) {
 }
 
 export default async function Thread({ params }: { params: { id: string } }) {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return redirect("/");
+  }
+
   const thread = await getThread(params.id);
   const comments = await getComments(params.id);
 
