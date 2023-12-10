@@ -16,11 +16,13 @@ export default function SigninForm() {
       callbackUrl: `${window.location.origin}`,
     });
 
-    if (!signInResult?.ok) {
-      toast.error("Something went wrong");
+    if (signInResult?.ok) {
+      toast.success("Check your email!");
+      return;
     }
 
-    return toast.success("Check your email!");
+    toast.error("Something went wrong");
+    return;
   }
 
   return (
