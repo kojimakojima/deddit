@@ -15,9 +15,11 @@ import { useRef } from "react";
 export default function CommentForm({
   id,
   userName,
+  userId,
 }: {
   id: string;
   userName: string;
+  userId: string;
 }) {
   const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -41,6 +43,7 @@ export default function CommentForm({
       className="pb-8 flex"
     >
       <input name="userName" value={userName} hidden />
+      <input name="userId" value={userId} hidden />
       <Input
         className="mr-1"
         type="text"

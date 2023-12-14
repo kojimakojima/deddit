@@ -13,6 +13,7 @@ datasource db {
 model Thread {
   id String @id @default(uuid())
   userName String
+  userId String
   title String
   description String
   likes Int @default(0)
@@ -23,6 +24,7 @@ model Thread {
 model Comment {
   id  String @id @default(uuid())
   userName String
+  userId String
   comment String
   threadId String
   thread  Thread @relation(fields: [threadId], references: [id], onDelete: Cascade)

@@ -5,6 +5,7 @@ import prisma from "./utils/db";
 import { formatDateTime } from "@/helpers/formatDateTime";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./utils/auth";
+import DeleteDialog from "./components/DeleteDialog";
 
 async function getAllThreads() {
   const data = await prisma.thread.findMany({
@@ -18,6 +19,7 @@ async function getAllThreads() {
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
+  const userId = session?.user.id;
   const threads = await getAllThreads();
 
   return (
@@ -38,14 +40,24 @@ export default async function Home() {
           <div>
             <h2 className="font-bold text-2xl mb-4">THREADS</h2>
             {threads.map((thread) => (
-              <Link href={`/thread/${thread.id}`} key={thread.id}>
-                <div className="rounded-md mb-4 mx-8 border-4 border-slate-600">
-                  <h1 className="text-xl truncate px-8">{thread.title}</h1>
-                  <p className="text-xs">
-                    Created at {formatDateTime(thread.createdAt)}
-                  </p>
+              <div
+                key={thread.id}
+                className="relative rounded-md mb-4 mx-8 border-4 border-slate-600"
+              >
+                <div>
+                  <Link href={`/thread/${thread.id}`}>
+                    <h1 className="text-xl truncate px-8">{thread.title}</h1>
+                    <p className="text-xs">
+                      Created at {formatDateTime(thread.createdAt)}
+                    </p>
+                  </Link>
                 </div>
-              </Link>
+                {thread.userId === userId && (
+                  <div className="absolute top-1 right-0">
+                    <DeleteDialog threadId={thread.id} />
+                  </div>
+                )}
+              </div>
             ))}
           </div>
         </>

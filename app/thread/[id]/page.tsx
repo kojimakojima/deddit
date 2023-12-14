@@ -41,6 +41,7 @@ async function getComments(id: string) {
 export default async function Thread({ params }: { params: { id: string } }) {
   const session = await getServerSession(authOptions);
   const userName = session?.user?.name as string;
+  const userId = session?.user?.id as string;
   if (!session) {
     return redirect("/");
   }
@@ -123,7 +124,7 @@ export default async function Thread({ params }: { params: { id: string } }) {
               )}
             </div>
           </div>
-          <CommentForm id={params.id} userName={userName} />
+          <CommentForm id={params.id} userName={userName} userId={userId} />
         </div>
       </div>
     );

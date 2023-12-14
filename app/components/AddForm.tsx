@@ -8,14 +8,20 @@ import { Button } from "@/components/ui/button";
 import { PenSquare } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-export default function AddForm({ userName }: { userName: string }) {
+export default function AddForm({
+  userName,
+  userId,
+}: {
+  userName: string;
+  userId: string;
+}) {
   const router = useRouter();
   return (
     <form
       className="mx-8"
       action={async (formData: FormData) => {
         toast.loading("Creating");
-        const result = await createThread(formData);
+        const result = await createThread(formData, userName, userId);
         toast.dismiss();
         if (result === "empty") {
           toast.error("Fill out completely");
