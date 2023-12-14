@@ -15,7 +15,7 @@ export default function SignInWithGithub() {
         })
       }
     >
-      Login with Github <Github className="w-4 h-4 ml-4" />
+      Sign in with Github <Github className="w-4 h-4 ml-4" />
     </Button>
   );
 }

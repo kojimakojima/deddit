@@ -27,7 +27,7 @@ export default function SigninForm() {
   }
 
   return (
-    <form action={SignInWithEmail} className="flex flex-col justify-center">
+    <form action={SignInWithEmail} className="flex-col justify-center hidden">
       <div className="flex flex-col gap-y-2">
         <Label>Email</Label>
         <Input
