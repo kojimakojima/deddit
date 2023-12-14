@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { PenSquare } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-export default function AddForm() {
+export default function AddForm({ userName }: { userName: string }) {
   const router = useRouter();
   return (
     <form
@@ -27,6 +27,14 @@ export default function AddForm() {
         }
       }}
     >
+      <Input
+        className="mb-2"
+        type="text"
+        name="userName"
+        placeholder="Your name"
+        value={userName}
+        disabled={true}
+      />
       <Input className="mb-2" type="text" name="title" placeholder="Title" />
       <Textarea className="mb-2" name="description" placeholder="Description" />
       <Button variant="outline">

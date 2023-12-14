@@ -12,7 +12,13 @@ import {
 } from "../../components/ui/hover-card";
 import { useRef } from "react";
 
-export default function CommentForm({ id }: { id: string }) {
+export default function CommentForm({
+  id,
+  userName,
+}: {
+  id: string;
+  userName: string;
+}) {
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   return (
@@ -34,6 +40,7 @@ export default function CommentForm({ id }: { id: string }) {
       }}
       className="pb-8 flex"
     >
+      <input name="userName" value={userName} hidden />
       <Input
         className="mr-1"
         type="text"

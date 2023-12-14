@@ -16,6 +16,7 @@ import { formatDateTime } from "@/helpers/formatDateTime";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/app/utils/auth";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 async function getThread(id: string) {
   const data = await prisma.thread.findUnique({
@@ -39,6 +40,7 @@ async function getComments(id: string) {
 
 export default async function Thread({ params }: { params: { id: string } }) {
   const session = await getServerSession(authOptions);
+  const userName = session?.user?.name as string;
   if (!session) {
     return redirect("/");
   }
@@ -59,6 +61,7 @@ export default async function Thread({ params }: { params: { id: string } }) {
           <div className="mb-4 flex flex-wrap">
             <Pencil size={22} className="mr-2" />
             <p>
+              <span className="font-bold mr-2">@{thread.userName}</span>
               Created on
               <span className="font-bold ml-2">
                 {formatDate(thread.createdAt)}
@@ -99,10 +102,15 @@ export default async function Thread({ params }: { params: { id: string } }) {
               ) : (
                 comments.map((comment) => (
                   <div className="mb-4 flex" key={comment.id}>
-                    <UserRound className="flex-shrink-0" />
+                    <Avatar>
+                      <AvatarImage src={""} />
+                      <AvatarFallback>
+                        {comment.userName.substring(0, 1).toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
                     <div className="max-w-full ml-2 pr-10">
                       <div className="flex items-center gap-2">
-                        <p className="text-sm">@Anonymous</p>
+                        <p className="text-sm">@{comment.userName}</p>
                         <p className="text-sm text-slate-600">
                           {formatDateTime(new Date(comment.createdAt))}
                         </p>
@@ -115,7 +123,7 @@ export default async function Thread({ params }: { params: { id: string } }) {
               )}
             </div>
           </div>
-          <CommentForm id={params.id} />
+          <CommentForm id={params.id} userName={userName} />
         </div>
       </div>
     );

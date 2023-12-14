@@ -8,6 +8,7 @@ import { redirect } from "next/navigation";
 
 export default async function AddThread() {
   const session = await getServerSession(authOptions);
+  const userName = session?.user?.name as string;
   if (!session) {
     return redirect("/");
   }
@@ -29,7 +30,7 @@ export default async function AddThread() {
         CREATE NEW THREAD
       </h1>
 
-      <AddForm />
+      <AddForm userName={userName} />
     </div>
   );
 }
