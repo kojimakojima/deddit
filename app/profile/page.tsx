@@ -1,36 +1,19 @@
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../utils/auth";
+import ProfileForm from "../components/ProfileForm";
+import { redirect } from "next/navigation";
 
-export default function Profile() {
+export default async function Profile() {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return redirect("/");
+  }
+  const userName = session?.user?.name as string;
+  const email = session?.user?.email as string;
+
   return (
     <div className="flex justify-center">
-      <Card className="w-[350px]">
-        <CardHeader>
-          <CardTitle>Edit your name</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form>
-            <div className="grid w-full items-center gap-4">
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="name">Name</Label>
-                <Input id="name" placeholder={""} />
-              </div>
-            </div>
-          </form>
-        </CardContent>
-        <CardFooter className="flex justify-between">
-          <Button variant="outline">Cancel</Button>
-          <Button>Submit</Button>
-        </CardFooter>
-      </Card>
+      <ProfileForm userName={userName} email={email} />
     </div>
   );
 }

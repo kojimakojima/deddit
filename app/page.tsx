@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Heading1, PenSquare } from "lucide-react";
+import { PenSquare } from "lucide-react";
 import Link from "next/link";
 import prisma from "./utils/db";
 import { formatDateTime } from "@/helpers/formatDateTime";

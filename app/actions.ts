@@ -56,3 +56,28 @@ export async function createComment(formData: FormData, id: string) {
     return "error";
   }
 }
+
+export async function updateUserName(formData: FormData, email: string) {
+  "use server";
+  try {
+    const userName = formData.get("userName") as string;
+
+    if (!userName.trim()) {
+      return;
+    }
+
+    await prisma.user.update({
+      where: {
+        email: email,
+      },
+      data: {
+        name: userName,
+      },
+    });
+    revalidatePath(`/`);
+    return true;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+}

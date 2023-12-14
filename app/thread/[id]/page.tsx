@@ -101,14 +101,14 @@ export default async function Thread({ params }: { params: { id: string } }) {
                 <h2 className="text-slate-500 text-center">No comments yet</h2>
               ) : (
                 comments.map((comment) => (
-                  <div className="mb-4 flex" key={comment.id}>
+                  <div className="mb-4 flex mr-10" key={comment.id}>
                     <Avatar>
                       <AvatarImage src={""} />
                       <AvatarFallback>
                         {comment.userName.substring(0, 1).toUpperCase()}
                       </AvatarFallback>
                     </Avatar>
-                    <div className="max-w-full ml-2 pr-10">
+                    <div className="w-full ml-2">
                       <div className="flex items-center gap-2">
                         <p className="text-sm">@{comment.userName}</p>
                         <p className="text-sm text-slate-600">
